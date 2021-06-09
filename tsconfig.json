@@ -1,0 +1,36 @@
+{
+  "extends": "./tsconfig.paths.json",
+  "compilerOptions": {
+    "skipLibCheck": true,
+    "allowSyntheticDefaultImports": true,
+    "forceConsistentCasingInFileNames": true,
+    "resolveJsonModule": true,
+    "target": "esnext",
+    "module": "esnext",
+    "lib": [
+      "es6",
+      "dom"
+    ],
+    "allowJs": true,
+    "jsx": "react",
+    "noEmit": false,
+    "isolatedModules": true,
+    "strict": true,
+    "moduleResolution": "node",
+    "esModuleInterop": true
+  },
+  "skipLibCheck": true,
+  "forceConsistentCasingInFileNames": true,
+  "resolveJsonModule": true,
+  "exclude": [
+    "node_modules",
+    "babel.config.js",
+    "metro.config.js",
+    "jest.config.js",
+    "webpack.dev.config.js",
+    "./src/containers/Root/*"
+  ],
+  "include": [
+    "src"
+  ]
+}
