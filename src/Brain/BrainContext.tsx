@@ -1,5 +1,5 @@
 import React, { createContext, useEffect, useState } from 'react';
-import {IBrain, IBrainManagerSubscriber, IMine} from "./outerInterfaces";
+import {IBrain, IBrainManagerSubscriber, IMine} from "./interfaces/outerInterfaces";
 import {useDispatch} from "react-redux";
 import {logicEntitySet} from "../store/logic/actions";
 

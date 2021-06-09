@@ -2,7 +2,7 @@ import React from 'react';
 import {Provider} from 'react-redux';
 import {store} from '../store/index';
 import Main from '../components/Main/Main';
-import Brain from '../Brain/Brain';
+import Brain from '../Brain/index';
 import {Provider as BrainProvider} from '../Brain/BrainContext';
 import GlobalDragDrop from '../components/GlobalDragDrop/GlobalDragDrop';
 import './styles.scss';

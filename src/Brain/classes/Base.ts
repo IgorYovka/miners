@@ -1,4 +1,4 @@
-import {IBase, ICoords, IPropsBaseCreate, IReceptionPoint} from "./innerInterfaces";
+import {IBase, ICoords, IPropsBaseCreate, IReceptionPoint} from "../interfaces/innerInterfaces";
 import Entity from './Entity';
 import Coords from './Coords';
 import ReceptionPoint from './ReceptionPoint';

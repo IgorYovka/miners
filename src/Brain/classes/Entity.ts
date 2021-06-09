@@ -1,4 +1,4 @@
-import {IEntity} from "./innerInterfaces";
+import {IEntity} from "../interfaces/innerInterfaces";
 
 let entityCounter = 0;
 

@@ -1,4 +1,4 @@
-import {ICoords, IPropsCoordsCreate} from "./innerInterfaces";
+import {ICoords, IPropsCoordsCreate} from "../interfaces/innerInterfaces";
 import Entity from './Entity';
 
 class Coords extends Entity implements ICoords{

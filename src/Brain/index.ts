@@ -1,18 +1,18 @@
-import Entity from './Entity';
-import Mine from './Mine';
-import Base from './Base';
-import Store from './Store';
+import Entity from './classes/Entity';
+import Mine from './classes/Mine';
+import Base from './classes/Base';
+import Store from './classes/Store';
 
 import {
   IEntity,
   IManager,
-} from "./innerInterfaces";
+} from "./interfaces/innerInterfaces";
 
 import {
   IPropsMineCreate as OUTERIPropsMineCreate,
   IPropsBaseCreate as OUTERIPropsBaseCreate,
   IPropsStoreCreate as OUTERIPropsStoreCreate
-} from './outerInterfaces';
+} from './interfaces/outerInterfaces';
 
 
 class Manager implements IManager{
