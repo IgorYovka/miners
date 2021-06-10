@@ -1,7 +1,8 @@
 import React, { createContext, useEffect, useState } from 'react';
+import * as _ from 'lodash';
 import {IBrain, IBrainManagerSubscriber, IMine} from "./interfaces/outerInterfaces";
 import {useDispatch} from "react-redux";
-import {logicEntitySet} from "../store/logic/actions";
+import {logicEntitySet, logicUpdate} from "../store/logic/actions";
 
 interface IContext {
   createMine(props: Omit<IMine, 'id' | 'reception'>): any;
@@ -35,8 +36,16 @@ const Provider = ({ children, brain }: {brain: IBrain, children: any}) => {
     }
   };
   
+  const updateCycle = () => {
+    setTimeout(()=>{
+      dispatch(logicUpdate({entities: _.cloneDeep(brain.manager.entities)}));
+      updateCycle();
+    }, 1000);
+  };
+  
   useEffect(() => {
     brain.manager.subscribe(brainManagerSubscriber);
+    updateCycle();
   }, []);
   
   const contextValue = {

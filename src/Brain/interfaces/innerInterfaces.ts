@@ -14,11 +14,13 @@ export interface IReceptionPoint extends IEntity{
 }
 
 export interface IWorker extends IEntity{
+  field: IWorkersField | undefined;
   isWorking: boolean;
   speed: number;
+  assign(field: IWorkersField): void;
   startJob(job: (w: IWorker) => Promise<void>): void;
   doingJob(job: (w: IWorker) => Promise<void>): void;
-  stopJob: any;
+  stopJob(): Promise<void>;
 }
 
 export interface IWorkersField extends IEntity{
@@ -71,6 +73,12 @@ export interface IPayload extends IEntity{
 export interface IMishok extends Omit<IPayload, 'id'>{
   entity: IEntity;
   amount: number;
+}
+
+export interface IWorkerManager {
+  workers: IWorker[];
+  // createWorker(): void;
+  // assignWorker(worker: IWorker, field: IWorkersField): void
 }
 
 export interface IManager {

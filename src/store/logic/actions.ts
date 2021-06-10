@@ -6,3 +6,10 @@ export function logicEntitySet(payload: {key: string, value: any, type: string})
     payload
   };
 }
+
+export function logicUpdate(payload: any) {
+  return {
+    type: types.LOGIC_UPDATE,
+    payload
+  };
+}

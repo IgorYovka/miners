@@ -1,3 +1,4 @@
 export default {
   LOGIC_ENTITY_SET: 'LOGIC_ENTITY_SET',
+  LOGIC_UPDATE: 'LOGIC_UPDATE'
 };

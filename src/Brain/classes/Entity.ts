@@ -1,3 +1,4 @@
+import {Manager} from '../';
 import {IEntity} from "../interfaces/innerInterfaces";
 
 let entityCounter = 0;
@@ -7,6 +8,10 @@ class Entity implements IEntity{
   
   constructor(){
     this.id = `${entityCounter++}`;
+    
+    const manager = new Manager();
+  
+    manager.setEntity(this);
   }
 }
 

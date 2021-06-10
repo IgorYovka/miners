@@ -1,4 +1,3 @@
-import Entity from './classes/Entity';
 import Mine from './classes/Mine';
 import Base from './classes/Base';
 import Store from './classes/Store';
@@ -13,21 +12,31 @@ import {
   IPropsBaseCreate as OUTERIPropsBaseCreate,
   IPropsStoreCreate as OUTERIPropsStoreCreate
 } from './interfaces/outerInterfaces';
+import WorkerManager from "./classes/WorkerManager";
 
 
-class Manager implements IManager{
+export class Manager implements IManager{
   entities: {[key: string]: IEntity};
   observers: any;
   
+  private static _instance: Manager;
+  
   constructor(){
-    this.entities = {};
-    this.observers = [];
+    if (!Manager._instance) {
+      Manager._instance = this;
+  
+      this.entities = {};
+      this.observers = [];
+    } else {
+      this.entities = Manager._instance.entities;
+      this.observers = Manager._instance.observers;
+    }
+    return Manager._instance;
   }
   
   createEntity(props: OUTERIPropsMineCreate | OUTERIPropsBaseCreate | OUTERIPropsStoreCreate){
     if(props?.type === 'mine'){
       const mine = new Mine(props);
-      this.entities[mine.id] = mine;
       
       this.observers.forEach((o: any) => o({
         action: "createEntity",
@@ -36,7 +45,6 @@ class Manager implements IManager{
       }));
     } else if(props?.type === 'base'){
       const base = new Base(props);
-      this.entities[base.id] = base;
   
       this.observers.forEach((o: any) => o({
         action: "createEntity",
@@ -45,7 +53,6 @@ class Manager implements IManager{
       }));
     } else if(props?.type === 'store'){
       const store = new Store(props);
-      this.entities[store.id] = store;
   
       this.observers.forEach((o: any) => o({
         action: "createEntity",
@@ -55,6 +62,10 @@ class Manager implements IManager{
     }
   }
   
+  setEntity(entity: IEntity){
+    this.entities[entity.id] = entity;
+  }
+  
   subscribe(foo: any){
     this.observers.push(foo);
   }
@@ -62,6 +73,8 @@ class Manager implements IManager{
 
 export default () => {
   return {
-    manager: new Manager()
+    manager: new Manager(),
+    workerManager: new WorkerManager(),
+    //transportManager: new TransportManager()
   }
 }

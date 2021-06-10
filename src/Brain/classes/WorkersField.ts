@@ -23,7 +23,9 @@ class WorkersField extends Entity implements IWorkersField{
   removeWorker(wId: string){
     const workerIndexToRemove = this.workers.findIndex((w: IWorker) => w.id === wId);
   
-    this.workers.splice(workerIndexToRemove, 1);
+    this.workers[workerIndexToRemove].stopJob().then(() => {
+      this.workers.splice(workerIndexToRemove, 1);
+    });
   }
   
   start(){

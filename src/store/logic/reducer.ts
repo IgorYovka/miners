@@ -24,6 +24,11 @@ const reducer = (state: RootState = initialState, action: any): RootState => {
           draft.entities[key] = value;
         }
         return;
+      case types.LOGIC_UPDATE:
+        const {entities} = action.payload;
+        
+        draft.entities = entities;
+        return;
         
       default:
         return state;
