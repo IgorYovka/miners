@@ -1,7 +1,7 @@
 import React, {memo, useEffect} from 'react';
 import {useDispatch, useSelector} from "react-redux";
-import {setData, openModalById} from 'src/store/ui/actions';
-import {Component, Name, ContextMenu as CM, MenuItem} from './style';
+import {setData} from 'src/store/ui/actions';
+import {Component, Name} from './style';
 import {RootState} from "src/store";
 import {useContextMenu} from "react-contexify";
 
@@ -15,11 +15,12 @@ const Element = ({id}: IProps) => {
     id: "element"
   });
   
-  const contextMenu = useSelector((s: RootState) => s.ui.contextMenu);
-  
   const data = useSelector((s: RootState) => s.logic.entities[id]);
   const {name, coords} = data;
-  const {x, y} = coords;
+  
+  const coordsObj = useSelector((s: RootState) => s.logic.entities[coords.id]);
+  
+  const {x, y} = coordsObj;
   
   const handleContextMenuClick = async (e: any) => {
     await dispatch(setData({contextMenu: id}));

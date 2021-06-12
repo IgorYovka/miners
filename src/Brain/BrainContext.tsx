@@ -55,39 +55,41 @@ const Provider = ({ children, brain }: {brain: IBrain, children: any}) => {
   
   const brainManagerSubscriber = (data: IBrainManagerSubscriber) => {
     const {action, props, result} = data;
+  
+    updateFoo();
+  };
+  
+  const updateFoo = () => {
+    const res = {
+      workersIds: [] as string[],
+      baseIds: [] as string[],
+      storeIds: [] as string[],
+      mineIds: [] as string[],
+      entities: _.cloneDeep(brain.manager.entities)
+    };
+  
+    for(let [key, entity] of Object.entries(res.entities)){
+      const {type} = entity as IEntity;
     
-    if(action === 'createEntity'){
-      dispatch(logicEntitySet({key: result.id, value: result, type: props.type}));
+      if(type === 'Worker'){
+        res.workersIds.push(key)
+      } else if (type === 'Base'){
+        res.baseIds.push(key)
+      } else if (type === 'Store'){
+        res.storeIds.push(key)
+      } else if (type === 'Mine'){
+        res.mineIds.push(key)
+      }
     }
+  
+    dispatch(logicSetData({...res}));
   };
   
   const updateCycle = () => {
     setTimeout(()=>{
-      const res = {
-        workersIds: [] as string[],
-        baseIds: [] as string[],
-        storeIds: [] as string[],
-        mineIds: [] as string[],
-        entities: _.cloneDeep(brain.manager.entities)
-      };
-      
-      for(let [key, entity] of Object.entries(res.entities)){
-        const {type} = entity as IEntity;
-        
-        if(type === 'Worker'){
-         res.workersIds.push(key)
-        } else if (type === 'Base'){
-          res.baseIds.push(key)
-        } else if (type === 'Store'){
-          res.storeIds.push(key)
-        } else if (type === 'Mine'){
-          res.mineIds.push(key)
-        }
-      }
-      
-      dispatch(logicSetData({...res}));
+      updateFoo();
       updateCycle();
-    }, 3000);
+    }, 1000);
   };
   
   useEffect(() => {

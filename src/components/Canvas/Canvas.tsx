@@ -15,6 +15,8 @@ const Canvas = memo(({className} : {className?: string}) => {
   const elements = useSelector((s: RootState) => s.logic.idsForCanvas.map((ids: string) => s.logic[ids])).flat();
   const dispatch = useDispatch();
   
+  console.log("Canvas");
+  
   const handleMouseUp = (e: any) => {
     const parent = document.getElementById('canvasWrapper');
     if(parent && canvasRef?.current && isDragging){

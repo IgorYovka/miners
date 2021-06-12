@@ -3,7 +3,7 @@ import Base from './classes/Base';
 import Store from './classes/Store';
 
 import {
-  IEntity,
+  IEntity, IEntityFactory,
   IManager,
 } from "./interfaces/innerInterfaces";
 
@@ -13,6 +13,8 @@ import {
   IPropsStoreCreate as OUTERIPropsStoreCreate
 } from './interfaces/outerInterfaces';
 import WorkerManager from "./classes/WorkerManager";
+import Entity from "./classes/Entity";
+import EntityFactory from "./classes/EntityFactory";
 
 
 export class Manager implements IManager{
@@ -35,30 +37,34 @@ export class Manager implements IManager{
   }
   
   createEntity(props: OUTERIPropsMineCreate | OUTERIPropsBaseCreate | OUTERIPropsStoreCreate){
+    let entity: IEntityFactory<IEntity>;
+    
     if(props?.type === 'mine'){
-      const mine = new Mine(props);
+      entity = new EntityFactory({type: 'Mine', props});
       
       this.observers.forEach((o: any) => o({
         action: "createEntity",
         props,
-        result: mine
+        result: entity.$
       }));
     } else if(props?.type === 'base'){
-      const base = new Base(props);
+      entity = new EntityFactory({type: 'Base', props});
   
       this.observers.forEach((o: any) => o({
         action: "createEntity",
         props,
-        result: base
+        result: entity.$
       }));
     } else if(props?.type === 'store'){
-      const store = new Store(props);
+      entity = new EntityFactory({type: 'Store', props});
   
       this.observers.forEach((o: any) => o({
         action: "createEntity",
         props,
-        result: store
+        result: entity.$
       }));
+    } else {
+      entity = new EntityFactory({props});
     }
   }
   

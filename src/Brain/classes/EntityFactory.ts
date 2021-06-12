@@ -1,3 +1,5 @@
+import {Manager} from '../';
+
 import Entity from './Entity';
 
 import Worker from './Worker';
@@ -8,8 +10,6 @@ import Store from './Store';
 import ReceptionPoint from './ReceptionPoint';
 import WorkersField from './WorkersField';
 import OreDeposit from './OreDeposit';
-
-import {Manager} from '../';
 
 import {
   IManager,
@@ -30,23 +30,26 @@ import {
 } from "../interfaces/innerInterfaces";
 
 
+let manager: IManager;
+
 interface IEntityFactoryProps<T> {
-  type: EntityStringType;
+  type?: EntityStringType;
   props: T;
 }
 
 class EntityFactory<T> implements IEntityFactory<T>{
-  manager: IManager;
   type: EntityStringType;
   id: string;
   
-  constructor({type, props}: IEntityFactoryProps<EntityFactoryPropsType>){
+  constructor({type = 'Entity', props}: IEntityFactoryProps<EntityFactoryPropsType>){
     this.type = type;
     this.id = '-1';
     
-    let entity = new Entity();
+    if(!manager){
+      manager = new Manager();
+    }
     
-    this.manager = new Manager();
+    let entity = new Entity();
     
     try{
       if(type === 'Worker'){
@@ -66,11 +69,11 @@ class EntityFactory<T> implements IEntityFactory<T>{
       } else if (type === 'OreDeposit') {
         entity = new OreDeposit(props as IPropsOreDepositCreate);
       } else {
-        throw new Error(`Wrong props on type ${type}`);
+        //entity = new Entity();
       }
       
       this.id = entity.id;
-      this.manager.setEntity(entity);
+      manager.setEntity(entity);
       
     } catch (e) {
       console.error(e);
@@ -79,7 +82,7 @@ class EntityFactory<T> implements IEntityFactory<T>{
   
   get $():T | undefined{
     //@ts-ignore
-    return this.manager.entities[this.id]
+    return manager.entities[this.id]
   }
 }
 

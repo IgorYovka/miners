@@ -154,13 +154,12 @@ export interface IEntitySign {
 
 
 export type EntityType = IWorker | ICoords | IMine | IBase | IStore | IReceptionPoint | IWorkersField | IOreDeposit | IOreDeposit | IPayload;
-export type EntityStringType = 'Worker' | 'Coords' | 'Mine' | 'Base' | 'Store' | 'ReceptionPoint' | 'WorkersField' | 'OreDeposit' | 'OrePiece' | 'Payload';
+export type EntityStringType = 'Entity' | 'Worker' | 'Coords' | 'Mine' | 'Base' | 'Store' | 'ReceptionPoint' | 'WorkersField' | 'OreDeposit' | 'OrePiece' | 'Payload';
 export type EntityFactoryPropsType = IPropsBaseCreate | IPropsCoordsCreate | IPropsMineCreate | IPropsOreDepositCreate
   | IPropsOrePieceCreate | IPropsPayloadCreate | IPropsReceptionCreate | IPropsStoreCreate | IPropsWorkerCreate | IPropsWorkersFieldCreate
 
 
 export interface IEntityFactory<T> {
-  manager: IManager;
   type: EntityStringType
   id: string;
   $: T | undefined;

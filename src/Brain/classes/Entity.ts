@@ -1,8 +1,6 @@
-import {Manager} from '../';
 import {IEntity} from "../interfaces/innerInterfaces";
 
 let entityCounter = 0;
-const manager = new Manager();
 
 class Entity implements IEntity{
   id: string;
