@@ -1,21 +1,22 @@
 import React, {memo, useRef} from 'react';
 import {Droppable} from 'react-beautiful-dnd';
-import {useDispatch, useSelector} from "react-redux";
-import {dragDropSetDroppedCoords} from "../../store/dragDrop/actions";
+import {useDispatch, useSelector, shallowEqual} from "react-redux";
+import {dragDropSetDroppedCoords} from "src/store/dragDrop/actions";
 import ElementCreation from '../../components/ElementCreation/ElementCreation';
 import ContextMenu from '../../components/ContextMenu/ContextMenu';
 import Element from '../../components/Element/Element';
 
 import {CanvasComponent, CanvasContent} from './styles';
-import {RootState} from "../../store";
+import {RootState} from "src/store";
+import {selectElementsForCanvas} from "src/store/logic/selectors";
 
 const Canvas = memo(({className} : {className?: string}) => {
   const canvasRef = useRef(null);
   const isDragging = useSelector((s: RootState) => s.dragDrop.isDragging);
-  const elements = useSelector((s: RootState) => s.logic.idsForCanvas.map((ids: string) => s.logic[ids])).flat();
+  const elements = useSelector(selectElementsForCanvas, shallowEqual);
   const dispatch = useDispatch();
   
-  console.log("Canvas");
+  console.log(elements);
   
   const handleMouseUp = (e: any) => {
     const parent = document.getElementById('canvasWrapper');

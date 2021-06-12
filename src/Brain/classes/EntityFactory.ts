@@ -5,7 +5,7 @@ import Entity from './Entity';
 import Worker from './Worker';
 import Coords from './Coords';
 import Mine from './Mine';
-import Base from './Mine';
+import Base from './Base';
 import Store from './Store';
 import ReceptionPoint from './ReceptionPoint';
 import WorkersField from './WorkersField';
@@ -25,6 +25,7 @@ import {
   IPropsWorkersFieldCreate,
   IEntityFactory,
   EntityType,
+  IEntity,
   EntityStringType,
   EntityFactoryPropsType
 } from "../interfaces/innerInterfaces";
@@ -49,7 +50,7 @@ class EntityFactory<T> implements IEntityFactory<T>{
       manager = new Manager();
     }
     
-    let entity = new Entity();
+    let entity: IEntity;
     
     try{
       if(type === 'Worker'){
@@ -69,11 +70,10 @@ class EntityFactory<T> implements IEntityFactory<T>{
       } else if (type === 'OreDeposit') {
         entity = new OreDeposit(props as IPropsOreDepositCreate);
       } else {
-        //entity = new Entity();
+        entity = new Entity();
       }
       
       this.id = entity.id;
-      manager.setEntity(entity);
       
     } catch (e) {
       console.error(e);

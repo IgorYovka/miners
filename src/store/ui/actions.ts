@@ -49,7 +49,7 @@ export const openModalById = (id: string) => async (dispatch: any, getState: any
   const entity = getState().logic.entities[id];
   const entityType = Object.getPrototypeOf(entity)?.constructor?.name;
   
-  console.log(entityType);
+  console.log(entityType, id);
   
   if(typeof entityType === 'string' && entityType.toLowerCase() === 'base'){
     dispatch(setUIData({baseModal: true}));

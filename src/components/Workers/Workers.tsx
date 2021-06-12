@@ -19,6 +19,7 @@ const SelectField = ({value, onChangeHandler}: { value: string, onChangeHandler(
     onChangeHandler(e.target.value);
   };
   
+  
   return (
     <select value={value} onChange={onSelectChange}>
       {entities.map((e: IEntity) => <option key={e.id} value={e.id}>{`${e.id} - ${e.type}`}</option>)}
@@ -34,6 +35,8 @@ const WorkerItem = ({wId}: { wId: string }) => {
   
   const data = useSelector((s: RootState) => s.logic.entities[wId]);
   const {id, isWorking, field} = data;
+  
+  const fieldObj = useSelector((s: RootState) => s.logic.entities[field?.id]);
   
   const onEdit = () => {
     setEdit(true);
@@ -63,7 +66,7 @@ const WorkerItem = ({wId}: { wId: string }) => {
   };
   
   useEffect(() => {
-    if (assignedField !== field?.id) {
+    if (assignedField !== fieldObj?.id) {
       brains.assignWorker(wId, assignedField);
     }
   }, [edit]);
@@ -76,7 +79,7 @@ const WorkerItem = ({wId}: { wId: string }) => {
       <FlagWorking isWorking={isWorking}>{isWorking}</FlagWorking>
       {
         edit ? <SelectField value={assignedField} onChangeHandler={setAssignedField}/> :
-          <ItemField>{field?.id}</ItemField>
+          <ItemField>{fieldObj?.id}</ItemField>
       }
     </>
     }
