@@ -7,9 +7,9 @@ export function logicEntitySet(payload: {key: string, value: any, type: string})
   };
 }
 
-export function logicUpdate(payload: any) {
+export function logicSetData(payload: any) {
   return {
-    type: types.LOGIC_UPDATE,
+    type: types.LOGIC_SET_DATA,
     payload
   };
 }

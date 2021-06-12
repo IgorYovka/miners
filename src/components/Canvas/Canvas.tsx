@@ -12,7 +12,7 @@ import {RootState} from "../../store";
 const Canvas = memo(({className} : {className?: string}) => {
   const canvasRef = useRef(null);
   const isDragging = useSelector((s: RootState) => s.dragDrop.isDragging);
-  const elements = useSelector((s: RootState) => s.logic.ids.map((ids: string) => s.logic[ids])).flat();
+  const elements = useSelector((s: RootState) => s.logic.idsForCanvas.map((ids: string) => s.logic[ids])).flat();
   const dispatch = useDispatch();
   
   const handleMouseUp = (e: any) => {

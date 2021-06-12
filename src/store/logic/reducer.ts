@@ -1,12 +1,14 @@
 import {produce} from 'immer';
 import types from './types';
-import {RootState} from "../index";
+import {RootState} from "src/store";
 
 const initialState = {
   entities: {},
-  ids: ["baseIds", "storeIds", "mineIds"],
+  idsForCanvas: ["baseIds", "storeIds", "mineIds"],
+  idsWithFields: ["storeIds", "mineIds"],
   baseIds: [],
   storeIds: [],
+  workersIds: [],
   mineIds: []
 };
 
@@ -24,12 +26,11 @@ const reducer = (state: RootState = initialState, action: any): RootState => {
           draft.entities[key] = value;
         }
         return;
-      case types.LOGIC_UPDATE:
-        const {entities} = action.payload;
-        
-        draft.entities = entities;
+      case types.LOGIC_SET_DATA:
+        for (const [key, value] of Object.entries(action.payload)) {
+          draft[key] = value;
+        }
         return;
-        
       default:
         return state;
     }

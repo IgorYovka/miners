@@ -1,5 +1,6 @@
 const path = require('path');
 const HtmlWebpackPlugin = require("html-webpack-plugin");
+const webpack = require('webpack');
 
 module.exports = {
   mode: "development",
@@ -67,6 +68,8 @@ module.exports = {
   resolve: {
     extensions: ['.tsx', '.ts', '.js'],
     alias: {
+      "src":  path.resolve(__dirname, 'src/'),
+      "store":  path.resolve(__dirname, 'src/store'),
       "components":  path.resolve(__dirname, 'src/components')
     }
   },
@@ -74,7 +77,10 @@ module.exports = {
     new HtmlWebpackPlugin({
       inject: true,
       template: "./public/index.html"
-    })
+    }),
+    new webpack.ProvidePlugin({
+      process: 'process/browser',
+    }),
   ],
   devServer: {
     contentBase: path.join(__dirname, "build"),

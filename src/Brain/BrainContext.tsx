@@ -1,13 +1,17 @@
-import React, { createContext, useEffect, useState } from 'react';
+import React, { createContext, useEffect, useState, useCallback } from 'react';
 import * as _ from 'lodash';
-import {IBrain, IBrainManagerSubscriber, IMine} from "./interfaces/outerInterfaces";
+import {IBrain, IBrainManagerSubscriber, IDescribeEntity, IEntity, IMine} from "./interfaces/outerInterfaces";
 import {useDispatch} from "react-redux";
-import {logicEntitySet, logicUpdate} from "../store/logic/actions";
+import {logicEntitySet, logicSetData} from "src/store/logic/actions";
+import {IEntityWithField, IWorker, IWorkersField} from "./interfaces/innerInterfaces";
 
 interface IContext {
-  createMine(props: Omit<IMine, 'id' | 'reception'>): any;
-  createBase(props: Omit<IMine, 'id' | 'reception'>): any;
-  createStore(props: Omit<IMine, 'id' | 'reception'>): any;
+  createMine(props: Omit<IMine, 'id' | 'reception'>): void;
+  createBase(props: Omit<IMine, 'id' | 'reception'>): void;
+  createStore(props: Omit<IMine, 'id' | 'reception'>): void;
+  createWorker(): void;
+  assignWorker(wId: string, eId: string): void;
+  removeWorker(id: string): void;
 }
 
 const Context = createContext<IContext>({} as IContext);
@@ -28,6 +32,27 @@ const Provider = ({ children, brain }: {brain: IBrain, children: any}) => {
     brain.manager.createEntity({...props, type: 'store'});
   };
   
+  const createWorker = () => {
+    brain.workerManager.createWorker();
+  };
+  
+  const assignWorker = (wId: string, fId: string) => {
+    const worker = brain.manager.entities[wId] as IWorker;
+    const field = brain.manager.entities[fId] as IWorkersField;
+    
+    if(worker && field){
+      brain.workerManager.assignWorker(worker, field);
+    }
+  };
+  
+  const removeWorker = (wId: string) => {
+    const worker = brain.manager.entities[wId] as IWorker;
+  
+    if(worker){
+      brain.workerManager.removeWorker(worker);
+    }
+  };
+  
   const brainManagerSubscriber = (data: IBrainManagerSubscriber) => {
     const {action, props, result} = data;
     
@@ -38,9 +63,31 @@ const Provider = ({ children, brain }: {brain: IBrain, children: any}) => {
   
   const updateCycle = () => {
     setTimeout(()=>{
-      dispatch(logicUpdate({entities: _.cloneDeep(brain.manager.entities)}));
+      const res = {
+        workersIds: [] as string[],
+        baseIds: [] as string[],
+        storeIds: [] as string[],
+        mineIds: [] as string[],
+        entities: _.cloneDeep(brain.manager.entities)
+      };
+      
+      for(let [key, entity] of Object.entries(res.entities)){
+        const {type} = entity as IEntity;
+        
+        if(type === 'Worker'){
+         res.workersIds.push(key)
+        } else if (type === 'Base'){
+          res.baseIds.push(key)
+        } else if (type === 'Store'){
+          res.storeIds.push(key)
+        } else if (type === 'Mine'){
+          res.mineIds.push(key)
+        }
+      }
+      
+      dispatch(logicSetData({...res}));
       updateCycle();
-    }, 1000);
+    }, 3000);
   };
   
   useEffect(() => {
@@ -51,7 +98,10 @@ const Provider = ({ children, brain }: {brain: IBrain, children: any}) => {
   const contextValue = {
     createMine,
     createBase,
-    createStore
+    createStore,
+    createWorker,
+    assignWorker,
+    removeWorker
   };
 
   return <Context.Provider value={contextValue}>{children}</Context.Provider>;

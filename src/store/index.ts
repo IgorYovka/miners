@@ -4,10 +4,13 @@ import { composeWithDevTools } from 'redux-devtools-extension/developmentOnly';
 
 import dragDropReducer from './dragDrop/reducer';
 import logicReducer from './logic/reducer';
+import uiReducer from './ui/reducer';
+
 //@ts-ignore
 const rootReducer = combineReducers({
   dragDrop: dragDropReducer,
-  logic: logicReducer
+  logic: logicReducer,
+  ui: uiReducer
 });
 
 const middleware = [reduxThunk];

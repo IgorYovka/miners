@@ -10,6 +10,7 @@ class Store extends Entity implements IBase{
   
   constructor(props: IPropsBaseCreate){
     super();
+    this.type = 'Store';
     
     this.name = props?.name || 'defaultBase';
     this.coords = new Coords(props);

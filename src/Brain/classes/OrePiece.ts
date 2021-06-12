@@ -7,6 +7,7 @@ class OrePiece extends Entity implements IOrePiece{
   
   constructor(props: IPropsOrePieceCreate){
     super();
+    this.type = 'OrePiece';
     
     this.material = props?.material || 'gold';
     this.quality = props?.quality || 1;

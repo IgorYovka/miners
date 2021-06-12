@@ -1,5 +1,11 @@
+
 export interface IEntity {
   id: string;
+  type: string;
+}
+
+export interface IDescribeEntity {
+  type: string;
 }
 
 export interface ICoords extends IEntity{
@@ -15,6 +21,16 @@ export interface IMine extends IEntity{
   name: string;
   coords: ICoords;
   reception: IReceptionPoint
+}
+
+export interface IWorker extends IEntity{
+  field: IWorkersField | undefined;
+  isWorking: boolean;
+  speed: number;
+}
+
+export interface IWorkersField extends IEntity{
+  workers: IWorker[]
 }
 
 export interface CreateEntityProps{
@@ -45,10 +61,18 @@ export interface IManager {
 
 export interface IBrain {
   manager: IManager;
+  workerManager: IWorkerManager;
 }
 
 export interface IBrainManagerSubscriber {
   props: any;
   action: any;
   result: any;
+}
+
+export interface IWorkerManager {
+  workers: IWorker[];
+  createWorker(): void;
+  removeWorker(w: IWorker): void;
+  assignWorker(worker: IWorker, field: IWorkersField): void
 }

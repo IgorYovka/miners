@@ -1,7 +1,7 @@
 import React, {memo, useContext, useEffect} from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import {Context} from '../../Brain/BrainContext';
-import {dragDropSetClear} from "../../store/dragDrop/actions";
+import {dragDropSetClear} from "src/store/dragDrop/actions";
 
 const ElementCreation = memo(() => {
   const {

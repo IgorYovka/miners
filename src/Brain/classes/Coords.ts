@@ -7,6 +7,7 @@ class Coords extends Entity implements ICoords{
   
   constructor(props: IPropsCoordsCreate){
     super();
+    this.type = 'Coords';
     
     const {x = 0, y = 0} = props.coords;
     

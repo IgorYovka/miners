@@ -7,6 +7,7 @@ class Payload extends Entity implements IPayload{
   
   constructor(props: IPropsPayloadCreate){
     super();
+    this.type = 'Payload';
     
     this.entity = props?.entity || new Entity();
     this.amount = props?.amount || 0;

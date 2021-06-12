@@ -8,6 +8,7 @@ class OreDeposit extends Entity implements IOreDeposit{
   
   constructor(props: IPropsOreDepositCreate){
     super();
+    this.type = 'OreDeposit';
     
     this.material = props?.material || 'gold';
     this.amount = props?.amount || 0;

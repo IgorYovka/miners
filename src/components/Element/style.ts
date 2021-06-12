@@ -1,23 +1,35 @@
 import styled from 'styled-components';
 
-export const Component = styled.div`
- .contextMenu {
-   border: 0.1rem solid black;
-   background: white;
- }
- 
- .contextMenuItem {
-   font-size: 15px;
-   padding: 1rem 2rem;
-   cursor: pointer;
-   min-width: 10rem;
-   user-select: none;
-   
+import {Menu as CM, Item as MI} from "react-contexify";
+
+
+export const ContextMenu = styled(CM)`
+  padding: 0;
+  border: 0.1rem solid black;
+  background: white;
+  overflow: hidden;
+  
+  .react-contexify__item {
    &:hover {
-     background: #bfbfbf;
+    .react-contexify__item__content {
+      background: #bfbfbf !important;
+     }
    }
- }
+  }
 `;
+
+export const MenuItem = styled(MI)`
+  font-size: 15px;
+  padding: 1rem 2rem;
+  cursor: pointer;
+  min-width: 10rem;
+  user-select: none;
+
+  &:hover {
+    background: #bfbfbf !important;
+  }
+`;
+
 
 export const Name = styled.div`
   position: relative;
@@ -31,7 +43,7 @@ interface IElementProps {
   y: number;
 }
 
-export const Element = styled.div<IElementProps>`
+export const Component = styled.div<IElementProps>`
   display: flex;
   flex-direction: column;
   align-items: center;

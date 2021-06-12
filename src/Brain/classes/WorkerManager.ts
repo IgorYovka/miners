@@ -22,14 +22,16 @@ class WorkerManager implements IWorkerManager{
     const newWorker = new Worker({speed: 60});
     
     this.workers.push(newWorker);
+    console.log('createWorker');
   }
   
-  async removeWorker({id: wId}: IWorker){
+  async removeWorker(worker: IWorker){
     
-    const workerIndexToRemove = this.workers.findIndex((w: IWorker) => w.id === wId);
+    const workerIndexToRemove = this.workers.findIndex((w: IWorker) => w.id === worker.id);
   
     this.workers[workerIndexToRemove].stopJob().then(() => {
       this.workers.splice(workerIndexToRemove, 1);
+      
     });
   }
   

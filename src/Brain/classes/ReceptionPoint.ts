@@ -9,6 +9,7 @@ class ReceptionPoint extends Entity implements IReceptionPoint{
   
   constructor(props: IPropsReceptionCreate){
     super();
+    this.type = 'ReceptionPoint';
     
     this.coords = new Coords(props);
     this.payload = [];

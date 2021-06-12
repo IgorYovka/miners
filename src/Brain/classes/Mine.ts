@@ -24,6 +24,7 @@ class Mine extends Entity implements IMine{
   
   constructor(props: IPropsMineCreate){
     super();
+    this.type = 'Mine';
     
     this.name = props?.name || 'defaultMine';
     this.coords = new Coords(props);

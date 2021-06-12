@@ -16,6 +16,7 @@ class Worker extends Entity implements IWorker{
   
   constructor(props: IPropsWorkerCreate){
     super();
+    this.type = 'Worker';
     
     this.field = undefined;
     this.speed = props?.speed || 0;

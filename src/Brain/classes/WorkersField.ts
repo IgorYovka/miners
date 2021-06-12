@@ -7,6 +7,7 @@ class WorkersField extends Entity implements IWorkersField{
   
   constructor(props: IPropsWorkersFieldCreate){
    super();
+   this.type = 'WorkersField';
    
    this.workers = [];
    this.job = props.job;

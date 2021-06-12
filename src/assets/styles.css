@@ -1,4 +1,15 @@
+* {
+    box-sizing: border-box;
+    user-select: none;
+}
+
 body {
     background: white;
     margin: 0;
+    font-size: 62.5%;
+}
+
+#modal {
+    position: fixed;
+    z-index: 100;
 }

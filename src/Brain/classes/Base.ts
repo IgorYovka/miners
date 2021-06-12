@@ -10,6 +10,7 @@ class Base extends Entity implements IBase{
   
   constructor(props: IPropsBaseCreate){
     super();
+    this.type = 'Base';
     
     this.name = props?.name || 'defaultBase';
     this.coords = new Coords(props);

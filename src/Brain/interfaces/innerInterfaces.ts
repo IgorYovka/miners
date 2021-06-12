@@ -1,6 +1,7 @@
 
 export interface IEntity {
   id: string;
+  type: string;
 }
 
 export interface ICoords extends IEntity{
@@ -70,15 +71,16 @@ export interface IPayload extends IEntity{
   amount: number;
 }
 
-export interface IMishok extends Omit<IPayload, 'id'>{
+export interface IMishok extends Omit<IPayload, 'id' | 'type'>{
   entity: IEntity;
   amount: number;
 }
 
 export interface IWorkerManager {
   workers: IWorker[];
-  // createWorker(): void;
-  // assignWorker(worker: IWorker, field: IWorkersField): void
+  createWorker(): void;
+  removeWorker(w: IWorker): void;
+  assignWorker(worker: IWorker, field: IWorkersField): void
 }
 
 export interface IManager {
@@ -136,4 +138,8 @@ export interface IPropsOrePieceCreate extends CreateEntityProps {
 export interface IPropsPayloadCreate extends CreateEntityProps{
   entity: IEntity;
   amount?: number;
+}
+
+export interface IEntityWithField extends IEntity{
+  field: IWorkersField;
 }
