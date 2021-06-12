@@ -14,10 +14,7 @@ class Coords extends Entity implements ICoords{
     this.x = x;
     this.y = y;
   }
-  
-  get(){
-    return {x: this.x, y: this.y}
-  }
 }
 
 export default Coords;
+

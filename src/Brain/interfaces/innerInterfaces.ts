@@ -1,3 +1,4 @@
+import OreDeposit from "../classes/OreDeposit";
 
 export interface IEntity {
   id: string;
@@ -10,7 +11,7 @@ export interface ICoords extends IEntity{
 }
 
 export interface IReceptionPoint extends IEntity{
-  coords: ICoords;
+  coords: IEntityFactory<ICoords>;
   loadPayload(s: IMishok): void;
 }
 
@@ -36,23 +37,24 @@ export interface IWorkersField extends IEntity{
 
 export interface IMine extends IEntity{
   name: string;
-  coords: ICoords;
-  reception: IReceptionPoint;
-  field: IWorkersField;
+  coords: IEntityFactory<ICoords>;
+  reception: IEntityFactory<IReceptionPoint> | undefined;
+  field: IEntityFactory<IWorkersField>;
+  deposit: IEntityFactory<IOreDeposit>;
   start(): void;
   stop(): void;
 }
 
 export interface IBase extends IEntity{
   name: string;
-  coords: ICoords;
-  reception: IReceptionPoint
+  coords: IEntityFactory<ICoords>;
+  reception: IEntityFactory<IReceptionPoint> | undefined
 }
 
 export interface IStore extends IEntity{
   name: string;
-  coords: ICoords;
-  reception: IReceptionPoint
+  coords: IEntityFactory<ICoords>;
+  reception: IEntityFactory<IReceptionPoint> | undefined;
 }
 
 export interface IOreDeposit extends IEntity{
@@ -87,6 +89,7 @@ export interface IManager {
   entities: {[key: string]: IEntity};
   observers: any;
   createEntity(props: CreateEntityProps): any;
+  setEntity(e: IEntity): void;
 }
 
 export interface CreateEntityProps{
@@ -142,4 +145,23 @@ export interface IPropsPayloadCreate extends CreateEntityProps{
 
 export interface IEntityWithField extends IEntity{
   field: IWorkersField;
+}
+
+export interface IEntitySign {
+  id: string;
+  type: string;
+}
+
+
+export type EntityType = IWorker | ICoords | IMine | IBase | IStore | IReceptionPoint | IWorkersField | IOreDeposit | IOreDeposit | IPayload;
+export type EntityStringType = 'Worker' | 'Coords' | 'Mine' | 'Base' | 'Store' | 'ReceptionPoint' | 'WorkersField' | 'OreDeposit' | 'OrePiece' | 'Payload';
+export type EntityFactoryPropsType = IPropsBaseCreate | IPropsCoordsCreate | IPropsMineCreate | IPropsOreDepositCreate
+  | IPropsOrePieceCreate | IPropsPayloadCreate | IPropsReceptionCreate | IPropsStoreCreate | IPropsWorkerCreate | IPropsWorkersFieldCreate
+
+
+export interface IEntityFactory<T> {
+  manager: IManager;
+  type: EntityStringType
+  id: string;
+  $: T | undefined;
 }

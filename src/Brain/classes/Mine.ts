@@ -1,8 +1,4 @@
 import Entity from './Entity';
-import Coords from './Coords';
-import ReceptionPoint from './ReceptionPoint';
-import WorkersField from "./WorkersField";
-import OreDeposit from "./OreDeposit";
 
 import {
   ICoords,
@@ -11,55 +7,93 @@ import {
   IReceptionPoint,
   IWorker,
   IWorkersField,
-  IOreDeposit, IMishok, IPayload
+  IOreDeposit, IMishok, IPayload, IEntityFactory
 } from "../interfaces/innerInterfaces";
 import OrePiece from "./OrePiece";
+import EntityFactory from "./EntityFactory";
 
-class Mine extends Entity implements IMine{
+class Mine extends Entity implements IMine {
   name: string;
-  coords: ICoords;
-  reception: IReceptionPoint;
-  field: IWorkersField;
-  deposit: IOreDeposit;
+  coords: IEntityFactory<ICoords>;
+  reception: IEntityFactory<IReceptionPoint> | undefined;
+  field: IEntityFactory<IWorkersField>;
+  deposit: IEntityFactory<IOreDeposit>;
   
-  constructor(props: IPropsMineCreate){
+  constructor(props: IPropsMineCreate) {
     super();
     this.type = 'Mine';
     
     this.name = props?.name || 'defaultMine';
-    this.coords = new Coords(props);
-    this.reception = new ReceptionPoint({coords: {x: this.coords.x + 10, y: this.coords.y + 10}});
-    this.deposit = new OreDeposit({material: 'gold', quality: 1, amount: 100000});
+    this.coords = new EntityFactory({type: 'Coords', props});
     
-    this.field = new WorkersField({job: this.minerJob});
+    if (this.coords.$) {
+      this.reception = new EntityFactory({
+        type: 'ReceptionPoint',
+        props: {
+          coords: {
+            x: this.coords.$.y + 10,
+            y: this.coords.$.y + 10
+          }
+        }
+      });
+    } else {
+      this.reception = undefined;
+    }
+    
+    this.deposit = new EntityFactory({
+      type: 'OreDeposit',
+      props: {material: 'gold', quality: 1, amount: 100000}
+    });
+    
+    this.field = new EntityFactory({
+      type: 'WorkersField',
+      props: {job: this.minerJob}
+    });
     
     this.minerJob = this.minerJob.bind(this);
   }
   
   private async minerJob(w: IWorker) {
     const mishok = await this.mining(w);
-    await this.transport(mishok);
+    
+    if (mishok) {
+      await this.transport(mishok);
+    }
   }
   
-  private async mining(w: IWorker): Promise<IMishok>{
+  private async mining(w: IWorker): Promise<IMishok | void> {
     await new Promise(r => setTimeout(r, 1000));
-    this.deposit.amount--;
-    return {
-      amount: w.speed,
-      entity: new OrePiece({material: this.deposit.material, quality: this.deposit.quality})
-    } as IMishok
+    const deposit = this.deposit.$;
+    
+    if (deposit) {
+      deposit.amount--;
+      
+      return {
+        amount: w.speed,
+        entity: new OrePiece({material: deposit.material, quality: deposit.quality})
+      } as IMishok
+    }
   }
   
-  private async transport(m: IMishok){
-    this.reception.loadPayload(m);
+  private async transport(m: IMishok) {
+    const r = this.reception?.$;
+    
+    if (r)
+      r.loadPayload(m);
   }
   
-  start(){
-    this.field.start();
+  start() {
+    const f = this.field.$;
+    
+    if (f)
+      f.start();
   }
   
-  stop(){
-    this.field.stop();
+  stop() {
+    const f = this.field.$;
+  
+    if (f)
+      f.stop();
   }
 }
 

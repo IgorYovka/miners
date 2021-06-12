@@ -1,17 +1,25 @@
-import {ICoords, IPropsReceptionCreate, IReceptionPoint, IPayload, IMishok} from "../interfaces/innerInterfaces";
+import {
+  ICoords,
+  IPropsReceptionCreate,
+  IReceptionPoint,
+  IPayload,
+  IMishok,
+  IEntityFactory
+} from "../interfaces/innerInterfaces";
 import Entity from './Entity';
 import Coords from './Coords';
 import Payload from './Payload';
+import EntityFactory from "./EntityFactory";
 
 class ReceptionPoint extends Entity implements IReceptionPoint{
-  coords: ICoords;
+  coords: IEntityFactory<ICoords>;
   payload: Payload[];
   
   constructor(props: IPropsReceptionCreate){
     super();
     this.type = 'ReceptionPoint';
-    
-    this.coords = new Coords(props);
+  
+    this.coords = new EntityFactory({type: 'Coords', props});
     this.payload = [];
   }
   
