@@ -1,4 +1,4 @@
-import React, {memo, useEffect} from 'react';
+import React, {memo} from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import {setData} from 'src/store/ui/actions';
 import {Component, Name} from './style';
@@ -6,21 +6,17 @@ import {RootState} from "src/store";
 import {useContextMenu} from "react-contexify";
 
 interface IProps {
-  id: string
+  id: string;
+  name: string;
+  x: number;
+  y: number;
 }
 
-const Element = ({id}: IProps) => {
+const Element = memo(({id, name, x, y}: IProps) => {
   const dispatch = useDispatch();
   const {show} = useContextMenu({
     id: "element"
   });
-  
-  const data = useSelector((s: RootState) => s.logic.entities[id]);
-  const {name, coords} = data;
-  
-  const coordsObj = useSelector((s: RootState) => s.logic.entities[coords.id]);
-  
-  const {x, y} = coordsObj;
   
   const handleContextMenuClick = async (e: any) => {
     await dispatch(setData({contextMenu: id}));
@@ -29,12 +25,21 @@ const Element = ({id}: IProps) => {
     return false;
   };
   
-  
   return <>
     <Component name={name} x={x} y={y} onContextMenu={handleContextMenuClick}>
       <Name>{name}</Name>
     </Component>
   </>
+});
+
+const ElementWrapper = ({id}: {id: string}) => {
+  const data = useSelector((s: RootState) => s.logic.entities[id]);
+  
+  const {name, coords} = data;
+  
+  const {x, y} = useSelector((s: RootState) => s.logic.entities[coords.id]);
+  
+  return <Element id={id} name={name} x={x} y={y}/>
 };
 
-export default Element;
+export default ElementWrapper;

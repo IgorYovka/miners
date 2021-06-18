@@ -85,11 +85,12 @@ const Provider = ({ children, brain }: {brain: IBrain, children: any}) => {
     dispatch(logicSetData({...res}));
   };
   
+  // Just for fun!! ) Actually want to try out smth and this is dummy way to update data
   const updateCycle = () => {
     setTimeout(()=>{
       updateFoo();
       updateCycle();
-    }, 1000);
+    }, 300);
   };
   
   useEffect(() => {
